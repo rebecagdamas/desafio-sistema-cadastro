@@ -1,0 +1,80 @@
+h4 {
+  align-items: center;
+  justify-content: center;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  padding-top: 20px;
+}
+
+.Login {
+  margin-left: 450px;
+  width: 450px;
+  height: 350px;
+  margin-top: 100px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
+}
+
+.form-group {
+  padding: 15px;
+}
+
+
+label {
+  text-align: left;
+  align-items: baseline;
+  margin-left: 60px;
+  display: block;
+}
+
+input {
+  position: center;
+  align-items: center;
+  justify-content: center;
+  display: center;
+
+  height: 24px;
+  width: 300px;
+  border-radius: 5px;
+  border: 1px rgba(43, 44, 51, 0.2) solid;
+}
+
+span {
+  font-size: xx-small;
+  display: block;
+  text-align: left;
+  align-items: baseline;
+  margin-left: 75px;
+  color: maroon;
+}
+
+button {
+  margin: 6px;
+  margin-top: 20px;
+  height: 32px;
+  width: 150px;
+  background-color: rgb(2, 117, 216);
+  border-radius: 5px;
+  border: rgb(2, 117, 216);
+  color: white;
+}
+
+body {
+  min-height: 100vh;
+  font-weight: 400;
+  font-family: sans-serif;
+  background: #12c2e9; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #f64f59,
+    #c471ed,
+    #12c2e9
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #f64f59,
+    #c471ed,
+    #12c2e9
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}

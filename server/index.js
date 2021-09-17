@@ -2,7 +2,11 @@ const express = require("express");
 const app = express();
 const nedb = require("nedb");
 const dbLogin = new nedb({
-  filename: "usuariosCadastrados.db",
+  filename: "usuariosLogin.db",
+  autoload: true,
+});
+const dbColaboradores = new nedb({
+  filename: "colaboradores.db",
   autoload: true,
 });
 const cors = require("cors");
@@ -12,44 +16,47 @@ app.use(express.json());
 
 //Fazer Login
 app.post("/login", (req, res) => {
-  const usuario = {
+  const login = {
     emailLogar: req.body.emailLogar,
     senhaLogar: req.body.senhaLogar,
   };
 
-  dbLogin.insert(usuario, function (err) {
+  console.log(emailLogar);
+  console.log(senhaLogar);
+
+  dbLogin.find(
+    { emailLogar: "emailLogar" } && { senhaLogar: "senhaLogar" },
+    function (err, docs) {
+      console.log("Senha e e-mail iguais");
+    }
+  );
+});
+
+// Cadastrar Usuário Login
+app.post("/usuarios-login", (req, res) => {
+  const usuariosLogin = {
+    nome: req.body.nome,
+    email: req.body.email,
+    senha: req.body.senha,
+  };
+
+  dbLogin.insert(usuariosLogin, function (err) {
     if (err) return console.log(err); //caso ocorrer algum erro
     console.log("Novo usuário adicionado!");
   });
 });
 
-// Registrar para Login
-app.post("/registrar-usuario", (req, res) => {
-  const usuario = {
-    nomeLogin: req.body.nomeLogin,
-    emailLogin: req.body.emailLogin,
-    senhaLogin: req.body.senhaLogin,
+// Adicionar Colaboradores
+app.post("/colaboradores", (req, res) => {
+  const colaborador = {
+    nome: req.body.nome,
+    email: req.body.email,
+    telfone: req.body.telefone,
   };
 
-  dbLogin.insert(usuario, function (err) {
+  dbColaboradores.insert(colaborador, function (err) {
     if (err) return console.log(err); //caso ocorrer algum erro
-    console.log("Novo usuário adicionado!");
-    const dadosSalvos = true;
-  });
-});
-
-// Adicionar Integrantes
-app.post("/registrar-usuario", (req, res) => {
-  const usuario = {
-    nomeLogin: req.body.nomeLogin,
-    emailLogin: req.body.emailLogin,
-    senhaLogin: req.body.senhaLogin,
-  };
-
-  dbLogin.insert(usuario, function (err) {
-    if (err) return console.log(err); //caso ocorrer algum erro
-    console.log("Novo usuário adicionado!");
-    const dadosSalvos = true;
+    console.log("Novo colaborador adicionado!");
   });
 });
 

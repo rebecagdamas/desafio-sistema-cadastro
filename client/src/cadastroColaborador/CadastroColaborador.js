@@ -1,44 +1,50 @@
-import React, { useState } from "react";
+import React from "react";
 import Axios from "axios";
-import { Redirect } from "react-router";
 import * as yup from "yup";
 import { ErrorMessage, Formik, Form, Field } from "formik";
 
 function CadastroColaborador() {
   const handleRegister = (values) => {
-    Axios.post("http://localhost:3080/integrantes", {
+    Axios.post("http://localhost:3080/colaboradores", {
+      nome: values.nome,
       email: values.email,
-      password: values.password,
+      telefone: values.telefone,
     }).then((response) => {
       alert(response.data.msg);
       console.log(response);
     });
   };
   const validationsRegister = yup.object().shape({
+    nome: yup
+      .string()
+      .max(50)
+      .min(10, "Digite o seu nome completo.")
+      .required("O nome é obrigatório."),
     email: yup
       .string()
       .email("E-mail inválido.")
       .required("O email é obrigatório."),
-    password: yup
-      .string()
-      .min(8, "A senha deve ter no mínimo 8 caracteres.")
-      .required("A senha é obrigatória."),
-    confirmation: yup
-      .string()
-      .oneOf([yup.ref("password"), null], "As senhas são diferentes.")
-      .required("A confirmação da senha é obrigatória."),
+    telefone: yup.number().required(11, "O telefone é obrigatório."),
   });
   return (
     <div>
-      <h1>Cadastro</h1>
+      <h4>Cadastro</h4>
       <Formik
         initialValues={{}}
         onSubmit={handleRegister}
         validationSchema={validationsRegister}
       >
         <Form className="register-form">
+          <div className="form-group">
+            <labe>Nome:</labe>
+            <Field name="password" className="form-field" />
+
+            <ErrorMessage component="span" name="nome" className="form-error" />
+          </div>
+
           <div className="register-form-group">
-            <Field name="email" className="form-field" placeholder="Email" />
+            <label>E-mail:</label>
+            <Field name="email" className="form-field" />
 
             <ErrorMessage
               component="span"
@@ -48,31 +54,18 @@ function CadastroColaborador() {
           </div>
 
           <div className="form-group">
-            <Field name="password" className="form-field" placeholder="Senha" />
+            <label>Telefone</label>
+            <Field name="telefone" className="form-field" />
 
             <ErrorMessage
               component="span"
-              name="password"
-              className="form-error"
-            />
-          </div>
-
-          <div className="form-group">
-            <Field
-              name="confirmation"
-              className="form-field"
-              placeholder="Senha"
-            />
-
-            <ErrorMessage
-              component="span"
-              name="confirmation"
+              name="telefone"
               className="form-error"
             />
           </div>
 
           <button className="button" type="submit">
-            Cadastrar
+            Cadastrar Colaborador
           </button>
         </Form>
       </Formik>

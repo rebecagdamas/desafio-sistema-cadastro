@@ -2,50 +2,13 @@ import React, { useState } from "react";
 import Axios from "axios";
 import * as yup from "yup";
 import { ErrorMessage, Formik, Form, Field } from "formik";
+import "./CadastroLogin.css";
+import Button from "react-bootstrap/Button";
 
 function CadastroLogin() {
-  /*
-  const [dadosLogin, setDadosLogin] = useState({
-    nomeLogin: "",
-    emailLogin: "",
-    senhaLogin: "",
-    confirmarSenha: "",
-  });
-
-  function handleInputChange(e) {
-    dadosLogin[e.target.name] = e.target.value;
-    setDadosLogin(dadosLogin);
-  }
-
-  // Função para comprar Senha e Confirmação
-  function confirmacaoSenha() {
-    const senha = dadosLogin.senhaLogin;
-    const confSenha = dadosLogin.confirmarSenha;
-    if (senha !== confSenha) {
-      alert("As senhas são diferentes");
-    }
-  }
-
-  function validarNome() {
-    const campoNome = dadosLogin.nomeLogin.length;
-    console.log(campoNome);
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    confirmacaoSenha(dadosLogin);
-
-    Axios.post("http://localhost:3080/registrar-usuario", {
-      nomeLogin: dadosLogin.nomeLogin,
-      emailLogin: dadosLogin.emailLogin,
-      senhaLogin: dadosLogin.senhaLogin,
-    }).then((response) => {
-      console.log(response);
-    });
-  }*/
-
   const handleRegister = (values) => {
-    Axios.post("http://localhost:3080/integrantes", {
+    Axios.post("http://localhost:3001/usuarios-login", {
+      nome: values.nome,
       email: values.email,
       password: values.password,
     }).then((response) => {
@@ -55,67 +18,79 @@ function CadastroLogin() {
   };
 
   const validationsRegister = yup.object().shape({
+    nome: yup
+      .string()
+      .max(50)
+      .min(10, "Digite o seu nome completo.")
+      .required("O nome é obrigatório."),
     email: yup
       .string()
       .email("E-mail inválido.")
       .required("O email é obrigatório."),
     password: yup
       .string()
-      .min(8, "A senha deve ter no mínimo 8 caracteres.")
+      .min(8, "A senha deve ter pelo menos 8 caracteres.")
+      .max(12)
       .required("A senha é obrigatória."),
     confirmation: yup
       .string()
+      .max(12)
       .oneOf([yup.ref("password"), null], "As senhas são diferentes.")
       .required("A confirmação da senha é obrigatória."),
   });
 
   return (
-    <div>
-      <h1>Cadastre-se no nosso Sistema</h1>
+    <div className="page">
+      <h4>Cadastro Login</h4>
 
-      <h1>Cadastro</h1>
       <Formik
         initialValues={{}}
         onSubmit={handleRegister}
         validationSchema={validationsRegister}
       >
-        <label>Nome Completo: </label>
-        <Field
-          type="text"
-          name="nomeLogin"
-          id="nomeLogin"
-          maxLength="50"
-          required
-        ></Field>
+        <Form className="formulario">
+          <div className="form-group">
+            <label>Nome: </label>
+            <Field type="text" name="nome" className="form-field" />
 
-        <div className="register-form-group">
-          <label>Nome:</label>
-          <Field name="email" className="form-field" />
+            <ErrorMessage component="span" name="nome" className="form-error" />
+          </div>
+          <div className="form-group">
+            <label>E-mail: </label>
+            <Field type="email" name="email" className="form-field" />
 
-          <ErrorMessage component="span" name="email" className="form-error" />
-        </div>
+            <ErrorMessage
+              component="span"
+              name="email"
+              className="form-error"
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Senha:</label>
-          <Field name="password" className="form-field" />
+          <div className="form-group">
+            <label>Senha: </label>
+            <Field type="password" name="password" className="form-field" />
 
-          <ErrorMessage
-            component="span"
-            name="password"
-            className="form-error"
-          />
-        </div>
+            <ErrorMessage
+              component="span"
+              name="password"
+              className="form-error"
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Confirmação Senha:</label>
-          <Field name="confirmation" className="form-field" />
+          <div className="form-group">
+            <label>Confirmação Senha: </label>
+            <Field type="password" name="confirmation" className="form-field" />
 
-          <ErrorMessage
-            component="span"
-            name="confirmation"
-            className="form-error"
-          />
-        </div>
+            <ErrorMessage
+              component="span"
+              name="confirmation"
+              className="form-error"
+            />
+          </div>
+          <Button className="btn btn-dark btn-lg btn-block" type="submit">
+            Cadastrar
+          </Button>
+        </Form>
       </Formik>
     </div>
   );
